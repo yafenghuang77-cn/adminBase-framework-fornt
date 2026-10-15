@@ -11,7 +11,6 @@ test-results/
 public/pdfjs/
 **/*.min.js
 **/*.min.css
-src/routeTree.gen.ts
 
 # Lock files
 package-lock.json

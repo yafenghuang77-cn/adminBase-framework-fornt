@@ -1,28 +1,230 @@
-@import 'tailwindcss';
+html,
+body,
+#root,
+#root > .ant-app {
+  height: 100%;
+}
 
 body {
   margin: 0;
-  color: #fff;
-  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-  background-image: linear-gradient(to bottom, #020917, #101725);
+  overflow: hidden;
 }
 
-.content {
+.ant-pro-layout {
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 0 100%, rgb(22 119 255 / 4%), transparent 30%),
+    var(--ant-color-bg-layout, #f5f5f5);
+}
+
+.ant-pro-layout > .ant-layout {
+  height: 100%;
+  min-height: 0 !important;
+}
+
+.ant-pro-layout .ant-pro-layout-container {
+  height: 100%;
+  min-height: 0;
+}
+
+.workspace-page {
   display: flex;
-  min-height: 100vh;
-  line-height: 1.1;
-  text-align: center;
   flex-direction: column;
+  min-height: 100%;
+  min-width: 0;
+}
+
+.workspace-page .ant-pro-page-container,
+.workspace-page .ant-pro-grid-content,
+.workspace-page .ant-pro-grid-content-children,
+.workspace-page .ant-pro-page-container-children-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  min-width: 0;
+}
+
+.workspace-page .ant-pro-page-container-children-container {
+  padding-bottom: 0;
+}
+
+.workspace-page .ant-pro-page-container-children-container > .ant-card {
+  flex: 1 0 auto;
+}
+
+.workspace-page .ant-pro-page-container-children-container > .ant-pro-table {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+}
+
+.workspace-page .ant-pro-table > .ant-pro-card:last-child {
+  flex: 1 0 auto;
+}
+
+.welcome-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.header-action {
+  display: inline-flex;
+  width: 32px;
+  height: 32px;
+  align-items: center;
   justify-content: center;
+  color: var(--ant-color-text-secondary, rgb(0 0 0 / 65%));
+  border-radius: 8px;
+  font-size: 16px;
+
+  &:hover {
+    background: rgb(0 0 0 / 4%);
+    color: #1677ff;
+  }
 }
 
-.content h1 {
-  font-size: 3.6rem;
-  font-weight: 700;
+.header-avatar {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 0 8px;
+  border-radius: 8px;
+  color: var(--ant-color-text, #334155);
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1;
+
+  &:hover {
+    background: rgb(0 0 0 / 4%);
+  }
 }
 
-.content p {
-  font-size: 1.2rem;
-  font-weight: 400;
-  opacity: 0.5;
+.header-user-icon {
+  color: var(--ant-color-text-secondary, #64748b);
+  background: var(--ant-color-fill-secondary, #f1f5f9);
+  font-size: 14px;
+}
+
+.header-user-name {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.header-user-chevron {
+  color: var(--ant-color-text-tertiary, #94a3b8);
+  font-size: 10px;
+}
+
+.header-language {
+  border: 0;
+  background: transparent;
+  font: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  color: var(--ant-color-text-secondary, #64748b);
+  cursor: pointer;
+
+  &:hover {
+    color: var(--ant-color-primary-text, #0958d9);
+    background: var(--ant-color-fill-tertiary, rgb(0 0 0 / 4%));
+  }
+}
+
+.ant-pro-layout .ant-pro-global-header-header-actions {
+  gap: 4px;
+}
+
+.ant-pro-layout .ant-pro-global-header-header-actions-item,
+.ant-pro-layout .ant-pro-global-header-header-actions-avatar {
+  padding-inline: 0;
+  border-radius: 8px;
+}
+
+/* 设置入口高于内容卡片，并低于设置抽屉。 */
+.ant-pro-setting-drawer-handle {
+  z-index: 998;
+}
+
+.ant-pro-layout .ant-pro-layout-content {
+  padding: 24px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+}
+
+.ant-pro-page-container .ant-pro-page-container-children-container {
+  padding-inline: 0;
+}
+
+.ant-pro-page-container .ant-page-header {
+  padding: 0;
+}
+
+.ant-pro-page-container .ant-pro-page-container-warp-page-header {
+  padding: 0 0 24px;
+}
+
+.ant-pro-page-container .ant-page-header-heading {
+  padding-block-start: 0;
+}
+
+.ant-pro-layout .ant-pro-sider {
+  border-inline-end: 1px solid rgb(0 0 0 / 4%);
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid #1677ff;
+  outline-offset: 3px;
+}
+
+.module-back {
+  margin-top: 16px;
+  text-align: center;
+}
+
+@media (width <= 991px) {
+  .welcome-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ant-pro-layout .ant-pro-layout-content {
+    padding: 24px;
+  }
+}
+
+@media (width <= 575px) {
+  .header-user-name,
+  .header-user-chevron {
+    display: none;
+  }
+
+  .ant-pro-layout .ant-pro-layout-content {
+    padding: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }

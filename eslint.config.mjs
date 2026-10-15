@@ -24,7 +24,6 @@ export default defineConfig([
     '.rspack-profile-*/**',
     'public/pdfjs/**',
     '**/*.min.js',
-    'src/routeTree.gen.ts',
   ]),
   {
     files: ['**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}'],
