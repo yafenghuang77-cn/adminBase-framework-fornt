@@ -5,3 +5,4 @@ yarn.lock
 
 # Skills lock
 skills-lock.json
+src/routeTree.gen.ts
