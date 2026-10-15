@@ -1,8 +1,24 @@
+# Dependencies, build output and generated files
+node_modules/
+dist/
+coverage/
+playwright-report/
+test-results/
+.pnpm-store/
+.rsbuild/
+.rspack-profile-*/
+.husky/_/
+public/pdfjs/
+**/*.min.js
+**/*.min.css
+src/routeTree.gen.ts
+
 # Lock files
 package-lock.json
 pnpm-lock.yaml
 yarn.lock
-
-# Skills lock
 skills-lock.json
-src/routeTree.gen.ts
+
+# Agent-managed resources
+.agents/
+.codex/

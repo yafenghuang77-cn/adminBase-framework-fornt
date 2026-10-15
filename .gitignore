@@ -6,6 +6,11 @@
 # Dist
 node_modules
 dist/
+coverage/
+playwright-report/
+test-results/
+.pnpm-store/
+.rsbuild/
 
 # Profile
 .rspack-profile-*/
@@ -13,4 +18,5 @@ dist/
 # IDE
 .vscode/*
 !.vscode/extensions.json
+!.vscode/settings.json
 .idea

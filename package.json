@@ -7,10 +7,17 @@
     "build": "rsbuild build",
     "dev": "rsbuild",
     "format": "prettier --write .",
-    "lint": "eslint .",
+    "format:check": "prettier --check .",
+    "lint": "pnpm run lint:js && pnpm run lint:style",
+    "lint:fix": "pnpm run lint:js --fix && pnpm run lint:style --fix",
+    "lint:js": "eslint . --max-warnings=0",
+    "lint:staged": "lint-staged",
+    "lint:style": "stylelint \"**/*.{css,less}\" --allow-empty-input --max-warnings=0",
+    "prepare": "husky",
     "preview": "rsbuild preview",
     "test": "rstest",
-    "test:watch": "rstest --watch"
+    "test:watch": "rstest --watch",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tests/tsconfig.json"
   },
   "dependencies": {
     "@ant-design/icons": "^6.3.4",
