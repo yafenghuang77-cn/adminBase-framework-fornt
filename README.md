@@ -14,6 +14,18 @@ pnpm build
 
 依赖使用带具体版本号的范围声明，按 npm 已发布版本及插件兼容要求选取，不使用 `latest` 标签。代码规范工具使用 ESLint 9.x 最新版；TypeScript 限定在 6.0.x，以匹配 typescript-eslint 当前的支持范围。其余依赖通常使用稳定版的 `^x.y.z`；Pro Components 使用支持 Ant Design 6 的官方 beta 版本 `^3.1.15-7`，保留 `antd ^6.6.6`。执行 `pnpm install` 后会同步锁文件及本地依赖。
 
+## Vite 配置
+
+`vite.config.ts` 使用 React 插件、React Compiler 和 Tailwind CSS 的 Vite 插件。`@` 指向 `src`，同时配置了 TypeScript 路径提示；开发环境开启 CSS / Less 源码映射。Less 与 CSS Modules 继续由 Vite 处理，Ant Design 主题仍通过 `ConfigProvider` 的 token 配置。
+
+Tailwind 的主题变量和工具类已在 `src/index.css` 引入，沿用 [官方关闭 Preflight 的方式](https://tailwindcss.com/docs/preflight#disabling-preflight)，保留项目当前基础样式。Tailwind 指令写在 CSS 入口，Less 文件继续用于现有组件样式。
+
+开发服务使用 `http://127.0.0.1:5173`，生产预览使用 `http://127.0.0.1:4173`。端口被占用时会直接提示错误，也可通过 `pnpm dev --port 其他端口` 或 `pnpm preview --port 其他端口` 覆盖。
+
+接口代理默认关闭。需要联调时，复制 `.env.example` 为 `.env.development.local`，将 `DEV_API_PROXY_TARGET` 填写为真实后端地址，然后重启开发服务。沿用旧项目约定，`/api/users?current=1` 会转发为后端的 `/users?current=1`。该变量仅由开发服务读取，不注入浏览器；生产接口转发由部署服务器配置。
+
+构建通过 [Vite 8 的 Rolldown 配置](https://vite.dev/config/build-options#build-rolldownoptions) 单独拆分 React、TanStack Router 和国际化基础库，其余依赖保留自动拆分，页面继续按需加载。
+
 ## 路由
 
 使用 TanStack Router 的代码路由，入口集中在 `src/router/routes.ts`，沿用旧项目的嵌套数组格式。`component` 接收 React 组件本身，不接收路径字符串或 JSX 元素：

@@ -14,6 +14,11 @@ export default {
   ],
   overrides: [
     {
+      files: ['src/index.css'],
+      // Tailwind 编译器使用字符串形式解析包导入。
+      rules: { 'import-notation': 'string' },
+    },
+    {
       files: ['**/*.less'],
       extends: ['stylelint-config-standard-less'],
       customSyntax: 'postcss-less',
