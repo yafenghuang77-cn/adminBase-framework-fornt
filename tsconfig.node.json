@@ -14,10 +14,13 @@
     "noEmit": true,
 
     /* Linting */
+    "strict": true,
+    "noImplicitReturns": true,
+    "forceConsistentCasingInFileNames": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["vite.config.ts"]
+  "include": ["*.ts", "config/**/*.ts", "scripts/**/*.ts", "tools/**/*.ts"]
 }

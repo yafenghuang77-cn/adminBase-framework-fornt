@@ -1,0 +1,46 @@
+{
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "file",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.stylelint": "explicit",
+    "source.organizeImports": "never",
+    "source.sortImports": "never",
+    "source.removeUnusedImports": "never"
+  },
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "eslint.enable": true,
+  "eslint.useFlatConfig": true,
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+  "eslint.format.enable": false,
+  "eslint.workingDirectories": [{ "mode": "location" }],
+  "prettier.enable": true,
+  "prettier.requireConfig": true,
+  "prettier.configPath": ".prettierrc.json",
+  "prettier.ignorePath": ".prettierignore",
+  "prettier.prettierPath": "./node_modules/prettier",
+  "prettier.useEditorConfig": false,
+  "stylelint.enable": true,
+  "stylelint.validate": ["css", "less"],
+  "stylelint.configFile": "stylelint.config.mjs",
+  "stylelint.stylelintPath": "./node_modules/stylelint",
+  "css.validate": false,
+  "less.validate": false,
+  "typescript.format.enable": false,
+  "javascript.format.enable": false,
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "[javascript][javascriptreact][typescript][typescriptreact][json][jsonc][css][less][html][markdown][yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[markdown]": {
+    "files.trimTrailingWhitespace": false
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}

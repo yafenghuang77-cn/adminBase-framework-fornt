@@ -1,17 +1,19 @@
-import "./App.css";
+import './App.css';
 
 function App() {
   return (
     <div className="container">
       <header className="header">
         <h1>AdminBase Framework</h1>
+
         <p>Modern Admin Dashboard Built with React + Vite</p>
       </header>
 
       <main className="main">
         <section className="welcome">
           <h2>Welcome to Your Admin Dashboard</h2>
-          <p>This is a starter template for building admin interfaces.</p>
+
+          <p>This is a starter template for building adm in interfaces.</p>
         </section>
       </main>
 

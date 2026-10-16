@@ -1,0 +1,16 @@
+node_modules
+**/.umi*
+dist
+dist-ssr
+framework
+coverage
+playwright-report
+test-results
+public/pdfjs
+.husky/_
+.pnpm-store
+.swc
+.turbopack
+pnpm-lock.yaml
+**/*.min.js
+**/*.min.css
