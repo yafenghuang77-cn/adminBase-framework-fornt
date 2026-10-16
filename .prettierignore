@@ -11,6 +11,7 @@ public/pdfjs
 .pnpm-store
 .swc
 .turbopack
+.tanstack
 pnpm-lock.yaml
 **/*.min.js
 **/*.min.css

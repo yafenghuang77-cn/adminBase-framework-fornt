@@ -28,6 +28,7 @@ dist-ssr
 .husky/_/
 .pnpm-store/
 .swc/
+.tanstack/
 coverage/
 playwright-report/
 test-results/

@@ -28,6 +28,7 @@ export default [
       '.pnpm-store/**',
       '.swc/**',
       '.turbopack/**',
+      '.tanstack/**',
       '**/*.min.js',
     ],
   },
