@@ -17,6 +17,7 @@ export const router = createRouter({
   defaultPendingComponent: LoadingPage,
   defaultErrorComponent: ErrorPage,
   defaultPendingMs: 200,
+  basepath: import.meta.env.BASE_URL,
 });
 
 declare module '@tanstack/react-router' {
