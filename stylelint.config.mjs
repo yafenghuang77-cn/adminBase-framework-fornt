@@ -3,6 +3,7 @@ export default {
   ignoreFiles: [
     '**/node_modules/**',
     'dist/**',
+    'adminBase/**',
     'dist-ssr/**',
     'framework/**',
     'coverage/**',

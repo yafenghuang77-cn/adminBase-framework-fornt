@@ -18,6 +18,7 @@ export default [
       '**/node_modules/**',
       '**/.umi*/**',
       'dist/**',
+      'adminBase/**',
       'dist-ssr/**',
       'framework/**',
       'coverage/**',

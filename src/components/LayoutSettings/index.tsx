@@ -42,6 +42,8 @@ export default function LayoutSettings({
       getContainer={() => document.body}
       drawerProps={{
         closable: true,
+        // 直接更新受控状态，避免内部状态回调在 StrictMode 中重放关闭动作。
+        onClose: () => onOpenChange(false),
         title: intl.formatMessage({ id: 'action.settings' }),
         extra: (
           <Button size="small" onClick={resetSettings}>

@@ -4,27 +4,26 @@ import react, { reactCompilerPreset } from '@vitejs/plugin-react';
 import { fileURLToPath, URL } from 'node:url';
 import { defineConfig } from 'vite';
 
-export default defineConfig(() => {
+export default defineConfig(({ command }) => {
   return {
     base: '/adminBase/',
     plugins: [react(), babel({ presets: [reactCompilerPreset()] }), tailwindcss()],
     resolve: {
       alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
       dedupe: ['react', 'react-dom'],
+    },
+    css: {
       preprocessorMaxWorkers: true,
       devSourcemap: true,
       modules: {
-        generateScopedName: '[name]__[local]__[hash:base64:5]',
-        // generateScopedName: isBuild ? '_[hash:base64:8]' : '[name]__[local]__[hash:base64:5]',
+        generateScopedName:
+          command === 'build' ? '_[hash:base64:8]' : '[name]__[local]__[hash:base64:5]',
       },
-    },
-    css: {
-      devSourcemap: true,
     },
 
     optimizeDeps: {
       entries: ['index.html'],
-      // 仅提前处理首屏使用的库，编辑器、PDF、Excel 等按实际引用自动发现。
+      // 显式预打包基础依赖；其他依赖仍会按实际引用自动发现。
       include: [
         'react',
         'react-dom/client',
@@ -58,7 +57,7 @@ export default defineConfig(() => {
     },
     build: {
       target: 'baseline-widely-available',
-      outDir: 'dist',
+      outDir: 'adminBase',
       emptyOutDir: true,
       manifest: true,
       sourcemap: true,

@@ -1,14 +1,16 @@
-import { type ReactNode, useState } from 'react';
+import { lazy, type ReactNode, Suspense, useState } from 'react';
 
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { ProLayout } from '@ant-design/pro-components';
 import { Link, useLocation, useNavigate } from '@tanstack/react-router';
+import { Spin } from 'antd';
 import { useIntl } from 'react-intl';
 
 import HeaderActions from '../../components/HeaderActions';
-import LayoutSettings from '../../components/LayoutSettings';
 import { getMenuData, type NavigationPath } from '../../router/menu';
 import { usePreferences } from '../../stores/preferences';
+
+const LayoutSettings = lazy(() => import('../../components/LayoutSettings'));
 
 export default function BasicLayout({ children }: { children: ReactNode }) {
   const intl = useIntl();
@@ -18,6 +20,7 @@ export default function BasicLayout({ children }: { children: ReactNode }) {
   const locale = usePreferences((state) => state.locale);
   const [collapsed, setCollapsed] = useState(() => window.matchMedia('(max-width: 991px)').matches);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [settingsRequested, setSettingsRequested] = useState(false);
   return (
     <>
       <a className="skip-link" href="#main-content">
@@ -61,7 +64,10 @@ export default function BasicLayout({ children }: { children: ReactNode }) {
             isMobile={props.isMobile}
             collapsed={collapsed}
             onToggleMenu={() => setCollapsed((value) => !value)}
-            onOpenSettings={() => setSettingsOpen(true)}
+            onOpenSettings={() => {
+              setSettingsRequested(true);
+              setSettingsOpen(true);
+            }}
           />,
         ]}
         onMenuHeaderClick={() => {
@@ -92,7 +98,11 @@ export default function BasicLayout({ children }: { children: ReactNode }) {
           {children}
         </div>
       </ProLayout>
-      <LayoutSettings open={settingsOpen} onOpenChange={setSettingsOpen} />
+      {settingsRequested && (
+        <Suspense fallback={<Spin fullscreen />}>
+          <LayoutSettings open={settingsOpen} onOpenChange={setSettingsOpen} />
+        </Suspense>
+      )}
     </>
   );
 }
