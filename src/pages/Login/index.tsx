@@ -1,6 +1,6 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { useNavigate } from '@tanstack/react-router';
-import { Alert, Button, Card, Form, Input } from 'antd';
+import { Button, Card, Form, Input } from 'antd';
 import { useIntl } from 'react-intl';
 
 import { useSession } from '../../stores/preferences';
@@ -26,7 +26,6 @@ export default function LoginPage() {
           <span>{t('login.welcome')}</span>
           <h1>{t('login.title')}</h1>
           <p>{t('login.description')}</p>
-          <Alert type="info" showIcon title={t('login.demo')} />
           <Form<LoginValues>
             name="login"
             layout="vertical"

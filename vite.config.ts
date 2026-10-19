@@ -2,10 +2,23 @@ import babel from '@rolldown/plugin-babel';
 import tailwindcss from '@tailwindcss/vite';
 import react, { reactCompilerPreset } from '@vitejs/plugin-react';
 import { fileURLToPath, URL } from 'node:url';
-import { defineConfig } from 'vite';
+import { createLogger, defineConfig, loadEnv } from 'vite';
 
-export default defineConfig(({ command }) => {
+import { environmentNames } from './config/env.ts';
+
+export default defineConfig(({ command, mode, isPreview }) => {
+  const envDir = fileURLToPath(new URL('.', import.meta.url));
+  const env = loadEnv(mode, envDir, ['VITE_', 'DEV_']);
+
+  if (!isPreview) {
+    const action = command === 'build' ? '打包' : '启动';
+    const environment = env.VITE_APP_ENV_NAME || mode;
+    const environmentName = environmentNames[environment] ?? environment;
+    createLogger().info(`\n[AdminBase] ${action}环境：${environmentName}（mode: ${mode}）\n`);
+  }
+
   return {
+    clearScreen: false,
     base: '/adminBase/',
     plugins: [react(), babel({ presets: [reactCompilerPreset()] }), tailwindcss()],
     resolve: {
@@ -47,13 +60,15 @@ export default defineConfig(({ command }) => {
       watch: {
         ignored: ['**/coverage/**', '**/playwright-report/**', '**/test-results/**'],
       },
-      proxy: {
-        '/api': {
-          target: 'http://127.0.0.1',
-          changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, '') || '/',
-        },
-      },
+      proxy: env.DEV_API_PROXY_TARGET
+        ? {
+            '/api': {
+              target: env.DEV_API_PROXY_TARGET,
+              changeOrigin: true,
+              rewrite: (path) => path.replace(/^\/api/, '') || '/',
+            },
+          }
+        : undefined,
     },
     build: {
       target: 'baseline-widely-available',

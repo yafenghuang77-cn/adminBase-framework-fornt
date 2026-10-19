@@ -1,6 +1,6 @@
 import { PageContainer } from '@ant-design/pro-components';
 import { useMatches } from '@tanstack/react-router';
-import { Card, Empty, Tag } from 'antd';
+import { Card, Empty } from 'antd';
 import { useIntl } from 'react-intl';
 
 export default function PlaceholderPage() {
@@ -11,12 +11,8 @@ export default function PlaceholderPage() {
     : (metadata?.name ?? intl.formatMessage({ id: 'app.title' }));
   return (
     <PageContainer title={title}>
-      <Card title={title} extra={<Tag>{intl.formatMessage({ id: 'placeholder.status' })}</Tag>}>
-        <p>{intl.formatMessage({ id: 'placeholder.intro' })}</p>
-        <Empty
-          image={Empty.PRESENTED_IMAGE_SIMPLE}
-          description={intl.formatMessage({ id: 'placeholder.description' })}
-        />
+      <Card title={title}>
+        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
       </Card>
     </PageContainer>
   );

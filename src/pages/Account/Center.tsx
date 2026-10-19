@@ -39,11 +39,6 @@ export default function AccountCenter() {
                 label: intl.formatMessage({ id: 'profile.brand' }),
                 children: brands.find((item) => item.id === brandId)?.name,
               },
-              {
-                key: 'role',
-                label: intl.formatMessage({ id: 'profile.role' }),
-                children: intl.formatMessage({ id: 'profile.roleValue' }),
-              },
             ]}
           />
         </Card>

@@ -20,11 +20,53 @@ pnpm build
 
 Tailwind 的主题变量和工具类已在 `src/index.css` 引入，沿用 [官方关闭 Preflight 的方式](https://tailwindcss.com/docs/preflight#disabling-preflight)，保留项目当前基础样式。Tailwind 指令写在 CSS 入口，Less 文件继续用于现有组件样式。
 
-开发服务使用 `http://127.0.0.1:5173`，生产预览使用 `http://127.0.0.1:4173`。端口被占用时会直接提示错误，也可通过 `pnpm dev --port 其他端口` 或 `pnpm preview --port 其他端口` 覆盖。
+开发服务使用 `http://127.0.0.1:8888/adminBase/`，构建预览使用 `http://127.0.0.1:4173/adminBase/`。开发端口被占用时会直接提示错误，也可通过 `pnpm dev --port 其他端口` 或 `pnpm preview --port 其他端口` 覆盖。
 
-接口代理默认关闭。需要联调时，复制 `.env.example` 为 `.env.development.local`，将 `DEV_API_PROXY_TARGET` 填写为真实后端地址，然后重启开发服务。沿用旧项目约定，`/api/users?current=1` 会转发为后端的 `/users?current=1`。该变量仅由开发服务读取，不注入浏览器；生产接口转发由部署服务器配置。
+## 环境变量与运行环境
+
+使用 Vite 官方的 [环境变量与 mode](https://vite.dev/guide/env-and-mode) 机制，启动和打包默认选择测试环境，不需要额外插件。
+
+| 环境 | 配置文件 | 启动命令 | 打包命令 |
+| --- | --- | --- | --- |
+| 测试（默认） | `.env.test` | `pnpm dev` 或 `pnpm dev:test` | `pnpm build` 或 `pnpm build:test` |
+| 预发 | `.env.staging` | `pnpm dev:staging` | `pnpm build:staging` |
+| 生产 | `.env.production` | `pnpm dev:production` | `pnpm build:production` |
+
+启动和打包时，终端会输出当前环境，例如 `[AdminBase] 打包环境：测试环境（mode: test）`。根目录的 `config/env.ts` 统一维护终端名称映射：`test` → 测试环境、`staging` → 预发环境、`production` → 生产环境；未配置映射的环境会显示原标识。`VITE_APP_ENV_NAME` 仍使用英文值 `test`、`staging`、`production`，首页显示该英文标识。`dev:production` 启动的是使用生产环境配置的开发服务；构建产物的本地预览仍使用 `pnpm preview`，预览不会重新选择或替换产物中的环境变量。
+
+环境配置中的 `VITE_APP_ENV_NAME` 用于显示环境名称，`VITE_API_BASE_URL` 作为业务请求地址配置，可通过 `import.meta.env.VITE_API_BASE_URL` 读取；当前业务接口尚未接入。`DEV_API_PROXY_TARGET` 只供 Vite 开发代理使用，不注入浏览器。所有 `VITE_` 变量都可被客户端读取，不应存放密钥。
+
+测试环境的开发代理沿用当前 `http://127.0.0.1`，预发和生产环境的开发代理默认关闭。需要联调时，填写对应文件的 `DEV_API_PROXY_TARGET`，也可复制 `.env.example` 为 `.env.test.local`、`.env.staging.local` 或 `.env.production.local`，只覆盖本机需要调整的变量。留空表示关闭代理，修改后重启对应环境的开发服务。沿用旧项目约定，`/api/users?current=1` 会转发为后端的 `/users?current=1`；正式部署的接口转发由部署服务器配置。
+
+Vite 会同时读取通用的 `.env` / `.env.local` 和当前 mode 的配置；同名变量按“进程环境变量 > 当前 mode 的 `.local` 文件 > 当前 mode 文件 > 通用 `.local` 文件 > 通用文件”覆盖。项目已忽略 `*.local`，个人覆盖不需要提交。
+
+`mode` 和 `NODE_ENV` 含义不同：`pnpm build` 虽然加载 `.env.test`，仍执行生产优化构建；不要为了测试环境把 `NODE_ENV` 改成 `development` 或 `test`。构建后的变量已写入产物，切换环境需要重新打包。直接运行 `pnpm exec vite` 或 `pnpm exec vite build` 仍遵循 Vite 自身的默认 mode，项目约定的默认测试环境由上述脚本指定。
+
+## 构建分包
 
 构建通过 [Vite 8 的 Rolldown 配置](https://vite.dev/config/build-options#build-rolldownoptions) 单独拆分 React、TanStack Router 和国际化基础库，其余依赖保留自动拆分，页面继续按需加载。
+
+## 统一接口请求
+
+业务接口统一使用 `src/utils/request.ts` 的 `request<T>(config)`，模块内只定义业务路径、参数和返回类型，不单独创建 Axios 实例。例如：
+
+```ts
+import { request } from '@/utils/request';
+
+interface User {
+  id: string;
+  name: string;
+}
+
+const users = await request<User[]>({
+  url: '/users',
+  method: 'GET',
+});
+```
+
+公共入口统一读取 `VITE_API_BASE_URL`，默认超时 30 秒并携带 Cookie。返回值为 HTTP 响应体，业务侧无需读取 Axios 的 `.data`；后端业务包装不自动拆解。上传通过同一入口传入 `FormData`、进度回调和单次超时配置。
+
+失败统一抛出 `RequestError`，保留 `code`、HTTP `status` 和可选的 `requestId`，不携带包含请求密码或上传内容的 Axios 配置。401/403 分别转换为 `UNAUTHORIZED` / `FORBIDDEN`；网络、超时、取消分别对应 `NETWORK_ERROR` / `REQUEST_TIMEOUT` / `REQUEST_CANCELED`，其他业务错误读取后端 `code`。公共层不弹出提示，页面按场景展示错误，写操作不自动重试。后续认证协议与业务响应格式调整应集中在此入口完成。
 
 ## 路由
 

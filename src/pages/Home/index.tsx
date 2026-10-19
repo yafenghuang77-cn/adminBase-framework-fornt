@@ -86,7 +86,7 @@ export default function HomePage() {
                 </div>
                 <div>
                   <dt>{t('home.environment')}</dt>
-                  <dd>{import.meta.env.MODE === 'development' ? 'DEV' : 'PROD'}</dd>
+                  <dd>{import.meta.env.VITE_APP_ENV_NAME}</dd>
                 </div>
               </dl>
               <p>{t('home.context')}</p>
@@ -106,7 +106,6 @@ export default function HomePage() {
                     <span className={styles.moduleIcon}>
                       <Icon aria-hidden="true" />
                     </span>
-                    <Tag>{t('home.pending')}</Tag>
                   </div>
                   <h3>{t(title)}</h3>
                   <p>{t(description)}</p>
@@ -118,40 +117,18 @@ export default function HomePage() {
             ))}
           </div>
         </section>
-        <div className={styles.detailGrid}>
-          <Card className={styles.detailCard}>
-            <h2>{t('home.capabilities')}</h2>
-            <p className={styles.sectionDescription}>{t('home.capabilitiesHint')}</p>
-            <div className={styles.capabilityGrid}>
-              {capabilities.map((key) => (
-                <div className={styles.capability} key={key}>
-                  <h3>{t(`home.${key}Title`)}</h3>
-                  <p>{t(`home.${key}Description`)}</p>
-                </div>
-              ))}
-            </div>
-          </Card>
-          <Card className={styles.detailCard}>
-            <h2>{t('home.notes')}</h2>
-            <ul className={styles.notes}>
-              <li>
-                <strong>{t('home.businessTitle')}</strong>
-                <p>{t('home.businessDescription')}</p>
-              </li>
-              <li>
-                <strong>{t('home.brandNoteTitle')}</strong>
-                <p>{t('home.brandNote')}</p>
-              </li>
-              <li>
-                <strong>{t('home.loginNoteTitle')}</strong>
-                <p>{t('home.loginNote')}</p>
-              </li>
-            </ul>
-            <Link to="/monitoring/query" className={styles.queryLink}>
-              {t('menu.query')} <ArrowRightOutlined aria-hidden="true" />
-            </Link>
-          </Card>
-        </div>
+        <Card className={styles.detailCard}>
+          <h2>{t('home.capabilities')}</h2>
+          <p className={styles.sectionDescription}>{t('home.capabilitiesHint')}</p>
+          <div className={styles.capabilityGrid}>
+            {capabilities.map((key) => (
+              <div className={styles.capability} key={key}>
+                <h3>{t(`home.${key}Title`)}</h3>
+                <p>{t(`home.${key}Description`)}</p>
+              </div>
+            ))}
+          </div>
+        </Card>
       </div>
     </PageContainer>
   );
