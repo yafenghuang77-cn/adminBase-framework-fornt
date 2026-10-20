@@ -2,42 +2,33 @@ import { UserOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-components';
 import { Link } from '@tanstack/react-router';
 import { Avatar, Card, Descriptions } from 'antd';
-import { useIntl } from 'react-intl';
 
-import { brands } from '../../config/brands';
 import StandaloneLayout from '../../layouts/StandaloneLayout';
-import { usePreferences, useSession } from '../../stores/preferences';
+import { useSession } from '../../stores/preferences';
 
 export default function AccountCenter() {
-  const intl = useIntl();
   const userName = useSession((state) => state.userName);
-  const brandId = usePreferences((state) => state.brandId);
   return (
     <StandaloneLayout>
-      <PageContainer title={intl.formatMessage({ id: 'account.center' })}>
+      <PageContainer title="个人中心">
         <Card
           className="profile-card"
           extra={
             <Link to="/account/settings" className="workspace-link">
-              {intl.formatMessage({ id: 'account.settings' })}
+              个人设置
             </Link>
           }
         >
           <Avatar size={64} icon={<UserOutlined />} />
           <h1>{userName}</h1>
-          <p>{intl.formatMessage({ id: 'profile.description' })}</p>
+          <p>管理您的个人信息与工作台偏好。</p>
           <Descriptions
             column={1}
             items={[
               {
                 key: 'name',
-                label: intl.formatMessage({ id: 'profile.name' }),
+                label: '显示名称',
                 children: userName,
-              },
-              {
-                key: 'brand',
-                label: intl.formatMessage({ id: 'profile.brand' }),
-                children: brands.find((item) => item.id === brandId)?.name,
               },
             ]}
           />

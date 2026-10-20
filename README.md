@@ -82,7 +82,7 @@ export default [
 ] as const satisfies readonly AppRoute[];
 ```
 
-- `name`：默认菜单和页面名称；可选 `locale` 对应 `src/locales` 的翻译键。
+- `name`：菜单和页面名称，直接使用中文文案。
 - `icon`：Ant Design 图标名称，目前支持的映射位于 `src/router/menu.tsx`。
 - `path`：使用绝对路径；子路由放入 `routes`，路径须位于父级路径下。动态参数使用 TanStack 原生的 `$userId` 写法。
 - `redirect`：内部跳转目标。子项与父项同路径时，会转换为原生索引路由，仅访问父路径时重定向，不影响其他子页面。
@@ -100,11 +100,11 @@ export default [
 ## 工作台与布局
 
 - `src/layouts/BasicLayout`：ProLayout 混合导航、折叠侧栏、菜单选中状态和面包屑。
-- `src/pages/Home`：迁移自旧项目的工作台内容，包含品牌信息、功能入口与框架能力说明。
-- `src/components/HeaderActions`：品牌、语言、布局设置和个人菜单；个人中心与设置位于 `src/pages/Account`。
+- `src/pages/Home`：迁移自旧项目的工作台内容，包含功能入口与框架能力说明。
+- `src/components/HeaderActions`：布局设置和个人菜单；个人中心与设置位于 `src/pages/Account`。
 - `src/components/LayoutSettings`：使用 ProComponents 的设置抽屉调整主题、主色、导航模式等，并支持恢复默认。
-- `src/stores/preferences.ts`：使用 Zustand 管理状态；品牌、语言与布局偏好保存在 localStorage，演示会话保存在 sessionStorage。
-- `src/locales`：React Intl 的中英文文案；Ant Design 和 ProLayout 使用对应语言设置。
+- `src/stores/preferences.ts`：使用 Zustand 管理状态；布局偏好保存在 localStorage，演示会话保存在 sessionStorage。
+- 界面统一使用简体中文，Ant Design 和 ProLayout 固定使用中文配置。品牌 SVG 资源保留在 `src/assets/brands`，当前不提供品牌切换。
 
 菜单路径沿用旧项目，覆盖系统管理、用户管理、文件管理和性能统计。各模块当前使用 `src/pages/Placeholder` 提供接入占位，尚未迁移旧项目的文件预览、用户数据、权限服务或性能采集。首页入口与侧栏菜单均可跳转，页面组件统一位于 `src/pages`。
 

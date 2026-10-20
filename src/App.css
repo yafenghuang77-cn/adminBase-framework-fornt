@@ -125,22 +125,6 @@ body {
   font-size: 10px;
 }
 
-.header-language {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  color: var(--ant-color-text-secondary, #64748b);
-  cursor: pointer;
-
-  &:hover {
-    color: var(--ant-color-primary-text, #0958d9);
-    background: var(--ant-color-fill-tertiary, rgb(0 0 0 / 4%));
-  }
-}
-
 .ant-pro-layout .ant-pro-global-header-header-actions {
   gap: 4px;
 }

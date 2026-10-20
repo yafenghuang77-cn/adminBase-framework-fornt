@@ -3,8 +3,6 @@ import { lazy, type ReactNode, Suspense, useState } from 'react';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { ProLayout } from '@ant-design/pro-components';
 import { Link, useLocation, useNavigate } from '@tanstack/react-router';
-import { Spin } from 'antd';
-import { useIntl } from 'react-intl';
 
 import HeaderActions from '../../components/HeaderActions';
 import { getMenuData, type NavigationPath } from '../../router/menu';
@@ -13,27 +11,24 @@ import { usePreferences } from '../../stores/preferences';
 const LayoutSettings = lazy(() => import('../../components/LayoutSettings'));
 
 export default function BasicLayout({ children }: { children: ReactNode }) {
-  const intl = useIntl();
   const location = useLocation();
   const navigate = useNavigate();
   const settings = usePreferences((state) => state.settings);
-  const locale = usePreferences((state) => state.locale);
   const [collapsed, setCollapsed] = useState(() => window.matchMedia('(max-width: 991px)').matches);
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [settingsRequested, setSettingsRequested] = useState(false);
   return (
     <>
       <a className="skip-link" href="#main-content">
-        {intl.formatMessage({ id: 'action.skip' })}
+        跳转到主要内容
       </a>
       <ProLayout
         {...settings}
-        title={intl.formatMessage({ id: 'app.title' })}
+        title="AdminBase 管理系统"
         logo={`${import.meta.env.BASE_URL}logo.svg`}
-        locale={locale}
+        locale="zh-CN"
         siderWidth={256}
         location={{ pathname: location.pathname }}
-        route={{ path: '/', children: getMenuData(intl) }}
+        route={{ path: '/', children: getMenuData() }}
         menu={{ locale: false, defaultOpenAll: false }}
         collapsed={collapsed}
         onCollapse={setCollapsed}
@@ -46,9 +41,7 @@ export default function BasicLayout({ children }: { children: ReactNode }) {
               event.stopPropagation();
               setCollapsed(!isCollapsed);
             }}
-            aria-label={intl.formatMessage({
-              id: isCollapsed ? 'action.expand' : 'action.collapse',
-            })}
+            aria-label={isCollapsed ? '展开菜单' : '收起菜单'}
           >
             {isCollapsed ? (
               <MenuUnfoldOutlined aria-hidden="true" />
@@ -65,7 +58,6 @@ export default function BasicLayout({ children }: { children: ReactNode }) {
             collapsed={collapsed}
             onToggleMenu={() => setCollapsed((value) => !value)}
             onOpenSettings={() => {
-              setSettingsRequested(true);
               setSettingsOpen(true);
             }}
           />,
@@ -98,11 +90,9 @@ export default function BasicLayout({ children }: { children: ReactNode }) {
           {children}
         </div>
       </ProLayout>
-      {settingsRequested && (
-        <Suspense fallback={<Spin fullscreen />}>
-          <LayoutSettings open={settingsOpen} onOpenChange={setSettingsOpen} />
-        </Suspense>
-      )}
+      <Suspense fallback={null}>
+        <LayoutSettings open={settingsOpen} onOpenChange={setSettingsOpen} />
+      </Suspense>
     </>
   );
 }

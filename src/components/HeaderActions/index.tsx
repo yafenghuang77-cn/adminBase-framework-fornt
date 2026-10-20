@@ -1,6 +1,5 @@
 import {
   DownOutlined,
-  GlobalOutlined,
   LogoutOutlined,
   MenuOutlined,
   SettingOutlined,
@@ -8,10 +7,8 @@ import {
 } from '@ant-design/icons';
 import { useNavigate } from '@tanstack/react-router';
 import { Avatar, Button, Dropdown, Tooltip } from 'antd';
-import { useIntl } from 'react-intl';
 
-import { usePreferences, useSession } from '../../stores/preferences';
-import BrandSwitcher from '../BrandSwitcher';
+import { useSession } from '../../stores/preferences';
 
 interface HeaderActionsProps {
   onOpenSettings: () => void;
@@ -26,10 +23,7 @@ export default function HeaderActions({
   collapsed,
   onToggleMenu,
 }: HeaderActionsProps) {
-  const intl = useIntl();
   const navigate = useNavigate();
-  const locale = usePreferences((state) => state.locale);
-  const setLocale = usePreferences((state) => state.setLocale);
   const userName = useSession((state) => state.userName);
   const signOut = useSession((state) => state.signOut);
   return (
@@ -38,38 +32,18 @@ export default function HeaderActions({
         <Button
           type="text"
           className="header-control"
-          aria-label={intl.formatMessage({ id: collapsed ? 'action.expand' : 'action.collapse' })}
+          aria-label={collapsed ? '展开菜单' : '收起菜单'}
           aria-expanded={!collapsed}
           onClick={onToggleMenu}
           icon={<MenuOutlined aria-hidden="true" />}
         />
       )}
-      <BrandSwitcher />
-      <Dropdown
-        trigger={['click']}
-        menu={{
-          selectable: true,
-          selectedKeys: [locale],
-          items: [
-            { key: 'zh-CN', label: '简体中文' },
-            { key: 'en-US', label: 'English' },
-          ],
-          onClick: ({ key }) => setLocale(key === 'en-US' ? 'en-US' : 'zh-CN'),
-        }}
-      >
-        <Button
-          type="text"
-          className="header-control"
-          aria-label={intl.formatMessage({ id: 'action.language' })}
-          icon={<GlobalOutlined aria-hidden="true" />}
-        />
-      </Dropdown>
-      <Tooltip title={intl.formatMessage({ id: 'action.settings' })}>
+      <Tooltip title="布局设置">
         <Button
           type="text"
           className="header-control"
           onClick={onOpenSettings}
-          aria-label={intl.formatMessage({ id: 'action.settings' })}
+          aria-label="布局设置"
           icon={<SettingOutlined aria-hidden="true" />}
         />
       </Tooltip>
@@ -80,18 +54,18 @@ export default function HeaderActions({
             {
               key: 'center',
               icon: <UserOutlined />,
-              label: intl.formatMessage({ id: 'account.center' }),
+              label: '个人中心',
             },
             {
               key: 'settings',
               icon: <SettingOutlined />,
-              label: intl.formatMessage({ id: 'account.settings' }),
+              label: '个人设置',
             },
             { type: 'divider' },
             {
               key: 'logout',
               icon: <LogoutOutlined />,
-              label: intl.formatMessage({ id: 'account.logout' }),
+              label: '退出登录',
               danger: true,
             },
           ],
@@ -105,11 +79,7 @@ export default function HeaderActions({
           },
         }}
       >
-        <button
-          type="button"
-          className="header-avatar"
-          aria-label={intl.formatMessage({ id: 'account.menu' })}
-        >
+        <button type="button" className="header-avatar" aria-label="用户菜单">
           <Avatar size={26} icon={<UserOutlined />} className="header-user-icon" />
           <span className="header-user-name">{userName}</span>
           <DownOutlined className="header-user-chevron" aria-hidden="true" />

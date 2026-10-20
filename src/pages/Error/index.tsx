@@ -1,18 +1,14 @@
 import { Button, Result } from 'antd';
 
-import { messages } from '../../locales';
-import { usePreferences } from '../../stores/preferences';
-
 export default function ErrorPage() {
-  const locale = usePreferences((state) => state.locale);
   return (
     <Result
       status="error"
-      title={messages[locale]['error.title']}
-      subTitle={messages[locale]['error.description']}
+      title="页面出现异常"
+      subTitle="页面暂时无法显示，请重新加载后重试。"
       extra={
         <Button type="primary" onClick={() => window.location.reload()}>
-          {messages[locale]['action.retry']}
+          重新加载
         </Button>
       }
     />

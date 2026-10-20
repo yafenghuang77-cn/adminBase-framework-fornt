@@ -2,11 +2,9 @@ import { useEffect } from 'react';
 
 import { onlineManager } from '@tanstack/react-query';
 import { App } from 'antd';
-import { useIntl } from 'react-intl';
 
 export default function NetworkStatus() {
   const { notification } = App.useApp();
-  const intl = useIntl();
   useEffect(() => {
     let previous = navigator.onLine;
     const update = () => {
@@ -18,10 +16,8 @@ export default function NetworkStatus() {
       previous = online;
       notification[online ? 'success' : 'warning']({
         key: 'network-status',
-        title: intl.formatMessage({ id: online ? 'network.online' : 'network.offline' }),
-        description: intl.formatMessage({
-          id: online ? 'network.onlineDescription' : 'network.offlineDescription',
-        }),
+        title: online ? '网络连接已恢复' : '网络连接已断开',
+        description: online ? '您可以继续操作。' : '请检查网络连接，恢复后可继续获取数据。',
         duration: online ? 3 : 0,
       });
     };
@@ -30,8 +26,8 @@ export default function NetworkStatus() {
       notification.warning({
         key: 'network-status',
         duration: 0,
-        title: intl.formatMessage({ id: 'network.offline' }),
-        description: intl.formatMessage({ id: 'network.offlineDescription' }),
+        title: '网络连接已断开',
+        description: '请检查网络连接，恢复后可继续获取数据。',
       });
     }
     window.addEventListener('online', update);
@@ -41,6 +37,6 @@ export default function NetworkStatus() {
       window.removeEventListener('offline', update);
       notification.destroy('network-status');
     };
-  }, [intl, notification]);
+  }, [notification]);
   return null;
 }

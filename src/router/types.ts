@@ -2,7 +2,6 @@ import { type RouteComponent } from '@tanstack/react-router';
 
 export interface RouteMetadata {
   name?: string;
-  locale?: string;
   layout?: boolean;
 }
 
@@ -18,7 +17,6 @@ export interface AppRoute extends RouteMetadata {
 declare module '@tanstack/react-router' {
   interface StaticDataRouteOption {
     name?: RouteMetadata['name'];
-    locale?: RouteMetadata['locale'];
     layout?: RouteMetadata['layout'];
   }
 }

@@ -1,7 +1,6 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { useNavigate } from '@tanstack/react-router';
 import { Button, Card, Form, Input } from 'antd';
-import { useIntl } from 'react-intl';
 
 import { useSession } from '../../stores/preferences';
 
@@ -11,10 +10,8 @@ interface LoginValues {
 }
 
 export default function LoginPage() {
-  const intl = useIntl();
   const navigate = useNavigate();
   const signIn = useSession((state) => state.signIn);
-  const t = (id: string) => intl.formatMessage({ id });
   return (
     <main className="login-page">
       <div className="login-panel">
@@ -23,9 +20,9 @@ export default function LoginPage() {
           <span>AdminBase</span>
         </div>
         <Card>
-          <span>{t('login.welcome')}</span>
-          <h1>{t('login.title')}</h1>
-          <p>{t('login.description')}</p>
+          <span>欢迎回来</span>
+          <h1>登录工作台</h1>
+          <p>使用您的账号继续。</p>
           <Form<LoginValues>
             name="login"
             layout="vertical"
@@ -37,15 +34,15 @@ export default function LoginPage() {
           >
             <Form.Item
               name="username"
-              label={t('login.account')}
-              rules={[{ required: true, whitespace: true, message: t('login.accountRequired') }]}
+              label="账号"
+              rules={[{ required: true, whitespace: true, message: '请输入账号' }]}
             >
               <Input autoComplete="username" prefix={<UserOutlined aria-hidden="true" />} />
             </Form.Item>
             <Form.Item
               name="password"
-              label={t('login.password')}
-              rules={[{ required: true, message: t('login.passwordRequired') }]}
+              label="密码"
+              rules={[{ required: true, message: '请输入密码' }]}
             >
               <Input.Password
                 autoComplete="current-password"
@@ -53,7 +50,7 @@ export default function LoginPage() {
               />
             </Form.Item>
             <Button block type="primary" htmlType="submit">
-              {t('login.submit')}
+              登录
             </Button>
           </Form>
         </Card>

@@ -73,7 +73,7 @@ export function buildRoutes<const TConfigs extends readonly AppRoute[], TParent 
       getParentRoute: () => parent,
       path,
       component: config.component ?? Outlet,
-      staticData: { name: config.name, locale: config.locale, layout: config.layout },
+      staticData: { name: config.name, layout: config.layout },
       beforeLoad: config.redirect
         ? () => {
             throw redirect<AnyRouter>({ to: config.redirect, replace: true });

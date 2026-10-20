@@ -1,17 +1,15 @@
 import { Link } from '@tanstack/react-router';
 import { Result } from 'antd';
-import { useIntl } from 'react-intl';
 
 export default function NotFoundPage() {
-  const intl = useIntl();
   return (
     <Result
       status="404"
       title="404"
-      subTitle={intl.formatMessage({ id: 'notFound.description' })}
+      subTitle="请检查访问地址，或返回首页继续操作。"
       extra={
         <Link to="/welcome" className="workspace-link">
-          {intl.formatMessage({ id: 'action.back' })}
+          返回首页
         </Link>
       }
     />
